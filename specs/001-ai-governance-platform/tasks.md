@@ -19,15 +19,15 @@
 
 **目标**：完成所有用户故事依赖的数据库、错误、日志、权限和安全基础能力。此阶段完成前不得开始业务故事实现。
 
-- [ ] T007 创建 `db/migration/V001__ai_platform_base.sql`，建立审计字段、逻辑删除、时间和 ID 规范。
-- [ ] T008 [P] 在 `ruoyi-modules/ai-common/` 创建统一错误码、分页、Trace ID、脱敏和密钥保护基础类。
-- [ ] T009 [P] 在 `ruoyi-modules/ai-common/` 创建项目访问端口 `ProjectAccessService` 和公共项目资源查询约束。
-- [ ] T010 [P] 配置 `ruoyi-modules/ai-common/` 的统一异常响应、结构化日志和敏感字段过滤。
-- [ ] T011 [P] 配置 `tests/architecture/ModuleBoundaryTest.java`，禁止跨模块直接引用 Mapper、Entity 和数据库表。
-- [ ] T012 创建 `db/migration/V002__ai_menu_permissions.sql`，初始化 AI 项目、模型、Prompt、工作流、执行和审计菜单权限。
-- [ ] T013 [P] 创建 `deploy/compose/.env.example` 和 `application-local.yml.example`，只包含占位符，不包含真实密钥。
-- [ ] T014 [P] 配置 `ruoyi-admin/src/main/resources/application.yml` 的数据库、Redis、Flyway、加密主密钥和执行线程池参数。
-- [ ] T015 运行基础安全检查，确认提交内容不包含 API Key、密码、Token 和生产配置，并记录 `docs/verification/security-baseline.md`。
+- [X] T007 创建 `db/migration/V001__ai_platform_base.sql`，建立审计字段、逻辑删除、时间和 ID 规范。
+- [X] T008 [P] 在 `ruoyi-modules/ai-common/` 创建统一错误码、分页、Trace ID、脱敏和密钥保护基础类。
+- [X] T009 [P] 在 `ruoyi-modules/ai-common/` 创建项目访问端口 `ProjectAccessService` 和公共项目资源查询约束。
+- [X] T010 [P] 配置 `ruoyi-modules/ai-common/` 的统一异常响应、结构化日志和敏感字段过滤。
+- [X] T011 [P] 配置 `tests/architecture/ModuleBoundaryTest.java`，禁止跨模块直接引用 Mapper、Entity 和数据库表。
+- [X] T012 创建 `db/migration/V002__ai_menu_permissions.sql`，初始化 AI 项目、模型、Prompt、工作流、执行和审计菜单权限。
+- [X] T013 [P] 创建 `deploy/compose/.env.example` 和 `application-local.yml.example`，只包含占位符，不包含真实密钥。
+- [X] T014 [P] 配置 `ruoyi-admin/src/main/resources/application.yml` 的数据库、Redis、Flyway、加密主密钥和执行线程池参数。
+- [X] T015 运行基础安全检查，确认提交内容不包含 API Key、密码、Token 和生产配置，并记录 `docs/verification/security-baseline.md`。
 
 **检查点**：基座可启动；未登录返回 401；功能权限不足返回 403；Trace ID 能贯穿一次请求；架构测试通过。
 

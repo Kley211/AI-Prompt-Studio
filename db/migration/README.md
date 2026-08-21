@@ -6,3 +6,4 @@
 - 本项目不自动回滚生产迁移，回滚必须通过经过评审的反向迁移或备份恢复完成。
 - `db/migration/` 保存平台业务迁移；RuoYi 系统原始表由上游初始化脚本管理。
 - 本地启动前使用 `deploy/compose/docker-compose.yml` 提供 PostgreSQL 和 Redis。
+- RuoYi 系统表由 PostgreSQL 初始化脚本导入；Flyway 只执行本目录中的 AI 平台迁移。

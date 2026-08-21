@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          driverClassName: org.postgresql.Driver
+          url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:ai_prompt}
+          username: ${POSTGRES_USER:ai_prompt}
+          password: ${POSTGRES_PASSWORD:change-me-local}
+  flyway:
+    enabled: true
+
+spring.data:
+  redis:
+    host: localhost
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+
+ai-platform:
+  security:
+    encryption-key: ${AI_ENCRYPTION_KEY:replace-with-32-byte-local-key}
+  execution:
+    core-pool-size: 8
+    max-pool-size: 32
+    queue-capacity: 500

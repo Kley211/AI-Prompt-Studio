@@ -471,6 +471,8 @@
         <module>ruoyi-modules</module>
         <!-- api模块 -->
         <module>ruoyi-api</module>
+        <!-- 架构约束测试 -->
+        <module>tests/architecture</module>
     </modules>
     <packaging>pom</packaging>
 

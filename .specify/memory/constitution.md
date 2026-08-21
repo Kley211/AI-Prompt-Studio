@@ -1,81 +1,70 @@
 <!--
-Sync Impact Report
-- Version change: template -> 1.0.0
-- Added principles: Security and isolation; Immutable releases; Auditability;
-  Incremental delivery; Simplicity and modularity
-- Added sections: Product constraints; Delivery workflow and quality gates
-- Removed sections: none
-- Deferred items: none
+同步影响报告
+- 版本变化：1.0.0 -> 1.0.1
+- 修改原则：仅将现有原则翻译为中文，未改变治理语义
+- 新增章节：无
+- 删除章节：无
+- 延后事项：无
 -->
 
-# AI Prompt Studio Constitution
+# AI Prompt Studio 项目宪章
 
-## Core Principles
+## 核心原则
 
-### I. Security and Project Isolation Are Non-Negotiable
+### I. 安全与项目隔离不可妥协
 
-Every protected operation MUST be authorized on the server. Functional permission and
-project-resource permission MUST both be enforced. Credentials and access keys MUST never be
-stored or exposed as reusable plaintext. Logs MUST minimize sensitive content and support
-masking. A user with access to one project MUST NOT gain access to another project by changing a
-request, identifier, or client state.
+每个受保护的操作都必须在服务端完成授权校验。系统功能权限和项目资源权限必须同时
+生效。凭证和访问密钥绝不能以可重复使用的明文形式存储或暴露。日志必须尽量减少敏感
+内容，并支持脱敏。用户不能通过修改请求、资源标识或客户端状态，访问其无权访问的其他
+项目资源。
 
-### II. Published Versions Are Immutable
+### II. 已发布版本不可变
 
-A published Prompt or workflow version MUST NOT be edited in place. Changes MUST create a new
-draft, pass validation, and be published as a distinct version. The platform MUST retain enough
-history to identify, compare, audit, and roll back published behavior. External consumers MUST be
-able to depend on a stable published contract.
+已发布的 Prompt 或工作流版本不得被原地修改。任何变更都必须创建新草稿，通过校验后
+作为独立版本发布。平台必须保留足够的历史信息，用于识别、比较、审计和回滚已发布行为。
+外部调用方必须能够依赖稳定的发布契约。
 
-### III. Every Execution Is Traceable
+### III. 每次执行都可追踪
 
-Every Prompt and workflow execution MUST have a stable execution identifier and trace identifier.
-The platform MUST record the resource version, result status, timing, usage, and sanitized error
-information. Workflow runs MUST expose node-level outcomes. Operations that change permissions,
-credentials, or production releases MUST be auditable.
+每次 Prompt 和工作流执行都必须拥有稳定的执行标识和追踪标识。平台必须记录资源版本、
+结果状态、执行时间、用量以及经过脱敏的错误信息。工作流运行必须提供节点级执行结果。
+权限、凭证或生产发布发生变化时，相关操作必须可以审计。
 
-### IV. Deliver Independent, Testable Increments
+### IV. 按可独立验证的增量交付
 
-Work MUST be divided into user-value slices that can be implemented and verified independently
-with documented prerequisites. Authorization failures, invalid inputs, provider failures, and
-boundary cases MUST be tested alongside successful paths. A milestone is not complete until its
-acceptance scenarios are demonstrably satisfied.
+开发工作必须拆分为能够独立实现和验证的用户价值切片，并明确其前置条件。除成功路径外，
+还必须测试授权失败、输入无效、模型服务失败和边界条件。只有当里程碑对应的验收场景可以
+被实际证明通过时，该里程碑才算完成。
 
-### V. Prefer the Smallest Sufficient Design
+### V. 选择满足需求的最小设计
 
-The initial product MUST remain a focused Prompt and AI workflow governance platform. New
-infrastructure, abstractions, node types, or services require a current user requirement and a
-clear operational benefit. Capabilities explicitly outside the active specification MUST NOT be
-implemented speculatively.
+首个版本必须保持为一个聚焦 Prompt 与 AI 工作流治理的平台。新增基础设施、抽象层、节点
+类型或服务，必须有当前用户需求和明确的运维收益作为依据。有效规格明确排除的能力不得被
+提前实现。
 
-## Product Constraints
+## 产品约束
 
-- The first release targets a single deploying organization while preserving project-level
-  resource isolation.
-- The product governs existing model services; it does not train, fine-tune, or host model files.
-- The first workflow release is a bounded directed workflow, not a general-purpose automation or
-  arbitrary-code platform.
-- Prompt and workflow publication MUST be separate from editing permission.
-- External access MUST be restricted to explicitly published resources and revocable credentials.
-- Technical choices belong in implementation plans, not feature specifications.
+- 首个版本面向单一部署组织，同时必须保证项目级资源隔离。
+- 平台负责治理已有模型服务，不负责训练、微调或托管模型文件。
+- 首个工作流版本是有明确边界的有向流程，不是通用自动化或任意代码执行平台。
+- Prompt 和工作流的发布权限必须与编辑权限分离。
+- 外部访问只能调用明确发布的资源，并且必须使用可撤销的访问凭证。
+- 技术选型必须写入实施计划，而不是产品功能规格。
 
-## Delivery Workflow and Quality Gates
+## 交付流程与质量门禁
 
-1. Start with a user-focused specification containing prioritized, independently testable stories.
-2. Resolve material ambiguity before creating an implementation plan.
-3. Record architecture, technology, data design, and interfaces in the implementation plan.
-4. Generate tasks grouped by user story so each story can be delivered and tested as a slice.
-5. Before implementation, verify consistency between constitution, specification, plan, and tasks.
-6. Before merging, demonstrate acceptance scenarios, automated checks, authorization coverage,
-   migration safety, and the absence of committed secrets.
+1. 首先编写面向用户的规格，包含按优先级排列、可独立测试的用户故事。
+2. 创建实施计划前，必须解决会实质影响范围的歧义。
+3. 架构、技术选型、数据设计和接口设计必须记录在实施计划中。
+4. 开发任务必须按用户故事组织，使每个故事都能作为独立切片交付和测试。
+5. 实施前必须检查宪章、规格、计划与任务清单的一致性。
+6. 合并前必须证明验收场景、自动化检查、权限覆盖、迁移安全和密钥检查均已通过。
 
-## Governance
+## 治理规则
 
-This constitution supersedes conflicting project practices. Amendments require a documented
-reason, an impact assessment for existing specifications and implementations, and an explicit
-version change. Governance versions follow semantic versioning: MAJOR for incompatible principle
-changes, MINOR for new or materially expanded governance, and PATCH for clarification. Every
-feature specification, plan, task list, and review MUST verify compliance. Exceptions MUST be
-documented with scope, owner, risk, and removal condition.
+本宪章优先于与其冲突的其他项目实践。修改宪章必须记录原因，评估对已有规格和实现的影响，
+并明确修改后的版本号。版本遵循语义化规则：不兼容的原则变更提升主版本，新增或实质扩展
+治理规则提升次版本，仅翻译、澄清或文字修正提升修订版本。每份功能规格、实施计划、任务
+清单和代码评审都必须检查是否符合本宪章。例外必须记录适用范围、负责人、风险和移除条件。
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-21 | **Last Amended**: 2026-08-21
+**版本**：1.0.1 | **批准日期**：2026-08-21 | **最后修订**：2026-08-21

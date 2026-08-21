@@ -1,331 +1,301 @@
-# Feature Specification: AI Capability Governance Platform
+# 功能规格：企业级 AI 能力治理平台
 
-**Feature Branch**: `main`
+**功能分支**：`main`
 
-**Created**: 2026-08-21
+**创建日期**：2026-08-21
 
-**Status**: Draft
+**状态**：草稿
 
-**Input**: User description: "Build an enterprise AI Prompt, model, and low-code workflow
-governance platform with project-level RBAC, versioned releases, external invocation, and auditable
-execution."
+**需求描述**：构建一个企业级 AI Prompt、模型和低代码工作流治理平台，支持项目级
+RBAC、版本化发布、外部调用和可审计执行。
 
-## User Scenarios & Testing *(mandatory)*
+## 用户场景与测试（必填）
 
-### User Story 1 - Establish a Governed Project Workspace (Priority: P1)
+### 用户故事 1：建立受控的项目工作空间（优先级：P1）
 
-A project owner creates a workspace, adds team members, and assigns roles so that each person can
-only view or change the AI resources required for their job.
+项目所有者创建工作空间、添加团队成员并分配角色，使每个人只能查看或修改其工作职责所需
+的 AI 资源。
 
-**Why this priority**: Every other platform capability depends on reliable ownership and isolation.
+**优先级原因**：其他平台能力都依赖可靠的资源归属和项目隔离。
 
-**Independent Test**: Create two projects and users with different project roles, then demonstrate
-that authorized actions succeed and cross-project or role-prohibited actions are denied.
+**独立测试方式**：创建两个项目以及拥有不同项目角色的用户，验证被授权的操作成功，跨项目
+访问和角色不允许的操作均被拒绝。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** an authenticated user with project creation permission, **When** the user creates a
-   project, **Then** the user becomes its owner and can manage its members.
-2. **Given** a project observer, **When** the observer attempts to edit a project resource,
-   **Then** the operation is denied without changing the resource.
-3. **Given** a member of Project A with no access to Project B, **When** the member requests a
-   Project B resource by identifier, **Then** no Project B content is disclosed.
-
----
-
-### User Story 2 - Develop and Test a Prompt (Priority: P1)
-
-A developer creates a Prompt, defines its variables and expected input/output, selects an approved
-model, and tests the Prompt with sample inputs before it is eligible for release.
-
-**Why this priority**: Prompt development and testing form the smallest useful AI capability that a
-team can govern.
-
-**Independent Test**: With a prepared project and approved model, create a variable-driven Prompt,
-run a successful test, and verify usage and result details without publishing it.
-
-**Acceptance Scenarios**:
-
-1. **Given** a developer and an approved model, **When** the developer creates a Prompt containing
-   required variables and supplies valid values, **Then** the rendered request is executed and the
-   result is shown.
-2. **Given** a Prompt with a missing required variable, **When** a developer starts a test,
-   **Then** execution is rejected with a clear validation message and no model call is made.
-3. **Given** a completed test, **When** the developer views its details, **Then** the platform shows
-   the tested version, model, status, duration, usage, estimated cost, and trace reference.
+1. **假如** 已登录用户拥有创建项目的权限，**当** 用户创建项目，**那么** 该用户成为项目
+   所有者，并且可以管理项目成员。
+2. **假如** 用户在项目中是观察者，**当** 该用户尝试编辑项目资源，**那么** 操作被拒绝，
+   资源不发生变化。
+3. **假如** 用户是项目 A 的成员但无权访问项目 B，**当** 用户通过标识请求项目 B 的资源，
+   **那么** 系统不得泄露任何项目 B 的受保护内容。
 
 ---
 
-### User Story 3 - Release and Roll Back Prompt Versions (Priority: P1)
+### 用户故事 2：开发和测试 Prompt（优先级：P1）
 
-A publisher reviews a tested Prompt version, publishes it as the project's stable version, and can
-later restore a previous published version without rewriting version history.
+开发者创建 Prompt，定义变量和预期输入输出，选择已批准的模型，并使用样例输入进行测试，
+确认通过后才允许进入发布流程。
 
-**Why this priority**: Controlled release and rollback protect business systems from unreviewed
-Prompt changes.
+**优先级原因**：Prompt 开发和测试是团队可治理的最小 AI 能力，也是平台的核心价值。
 
-**Independent Test**: Publish two distinct versions, verify that neither published version is
-editable, switch the active release back to the first version, and confirm the history is retained.
+**独立测试方式**：在已有项目和已批准模型的前提下，创建一个含变量的 Prompt，完成一次
+成功测试，并在不发布的情况下查看结果及用量信息。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** a tested draft and a user with publication permission, **When** the user publishes it,
-   **Then** an immutable published version becomes the active release.
-2. **Given** an active published version, **When** a developer changes its content, **Then** the
-   platform creates or updates a draft rather than changing the published version.
-3. **Given** multiple published versions, **When** a publisher rolls back, **Then** the selected
-   historical version becomes active and the rollback is recorded.
-
----
-
-### User Story 4 - Invoke a Published AI Capability (Priority: P1)
-
-An external business application uses a revocable project credential and stable resource code to
-invoke the currently published Prompt without knowing its provider credentials or model settings.
-
-**Why this priority**: A governed Prompt creates business value when applications can consume it
-through a stable, controlled contract.
-
-**Independent Test**: Issue a project credential, invoke a published Prompt with valid input, then
-disable the credential and verify that subsequent calls are rejected.
-
-**Acceptance Scenarios**:
-
-1. **Given** an active credential and published Prompt, **When** a caller sends valid input,
-   **Then** the caller receives a result and an execution reference.
-2. **Given** a valid credential and an unpublished resource, **When** a caller attempts invocation,
-   **Then** the request is rejected without exposing draft content.
-3. **Given** an expired, disabled, or invalid credential, **When** a caller invokes any resource,
-   **Then** access is denied and the failed attempt is traceable.
+1. **假如** 开发者可以使用某个已批准模型，**当** 开发者创建包含必填变量的 Prompt 并提供
+   有效变量值，**那么** 系统执行渲染后的请求并展示结果。
+2. **假如** Prompt 缺少必填变量，**当** 开发者启动测试，**那么** 系统显示明确的校验错误，
+   且不得调用模型。
+3. **假如** 一次测试已经完成，**当** 开发者查看执行详情，**那么** 系统展示测试版本、模型、
+   状态、耗时、用量、预估费用和追踪标识。
 
 ---
 
-### User Story 5 - Build and Run a Basic AI Workflow (Priority: P2)
+### 用户故事 3：发布和回滚 Prompt 版本（优先级：P1）
 
-A developer visually connects bounded workflow nodes to accept input, prepare a Prompt, call a
-model, branch on a condition, optionally call an approved external service, and return a result.
+发布者审查已测试的 Prompt 版本，将其发布为项目的稳定版本，并能在不改写版本历史的情况下
+恢复到先前发布的版本。
 
-**Why this priority**: Workflow composition expands the platform, but the Prompt lifecycle remains
-useful without it.
+**优先级原因**：受控发布和回滚可以防止未经审查的 Prompt 变更影响业务系统。
 
-**Independent Test**: Build, validate, run, and publish a start-to-model-to-end workflow, then view
-the outcome of every executed node.
+**独立测试方式**：发布两个不同版本，确认任一已发布版本都无法直接编辑；将当前生效版本
+切换回第一个版本，并验证所有历史仍被保留。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** a valid start-to-model-to-end workflow, **When** a developer validates and runs it,
-   **Then** nodes execute in dependency order and a final result is produced.
-2. **Given** a workflow containing a cycle, unreachable node, missing endpoint, or invalid
-   reference, **When** it is validated, **Then** publication and execution are blocked with specific
-   errors.
-3. **Given** a failed node, **When** a permitted user views the run, **Then** the failed node,
-   sanitized error, prior completed nodes, and skipped downstream nodes are identifiable.
+1. **假如** 存在已测试的草稿，且用户拥有发布权限，**当** 用户发布该草稿，**那么** 系统
+   生成不可变的已发布版本并将其设为当前生效版本。
+2. **假如** 已有生效的发布版本，**当** 开发者修改内容，**那么** 系统创建或更新草稿，
+   不得修改已发布版本。
+3. **假如** 存在多个已发布版本，**当** 发布者执行回滚，**那么** 指定历史版本重新生效，
+   并记录回滚操作。
 
 ---
 
-### User Story 6 - Monitor Usage and Audit Changes (Priority: P2)
+### 用户故事 4：调用已发布的 AI 能力（优先级：P1）
 
-An operator investigates executions, usage, cost, failures, releases, and permission changes by
-project, resource, user, time, status, or trace reference.
+外部业务应用使用可撤销的项目凭证和稳定的资源编码调用当前已发布的 Prompt，而不需要了解
+模型供应商凭证或内部模型配置。
 
-**Why this priority**: Operational evidence is necessary for cost control, incident diagnosis, and
-enterprise accountability.
+**优先级原因**：只有业务应用可以通过稳定且受控的契约消费 Prompt，治理后的能力才能产生
+实际业务价值。
 
-**Independent Test**: Produce successful and failed runs plus a release change, then locate each
-record using filters and verify that sensitive values remain protected.
+**独立测试方式**：签发项目调用凭证，使用有效输入调用已发布 Prompt；随后停用该凭证，
+验证后续调用被拒绝。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** multiple executions, **When** an authorized operator filters by project and status,
-   **Then** matching runs show resource version, duration, usage, cost, and trace reference.
-2. **Given** a workflow execution, **When** an authorized user opens it, **Then** each node's status,
-   timing, and permitted input/output summary is available.
-3. **Given** a permission, credential, publication, or rollback change, **When** an auditor searches
-   the affected resource, **Then** actor, action, target, time, and outcome are recorded.
+1. **假如** 调用凭证有效且 Prompt 已发布，**当** 调用方提交有效输入，**那么** 调用方收到
+   执行结果和执行标识。
+2. **假如** 调用凭证有效但资源尚未发布，**当** 调用方尝试调用，**那么** 请求被拒绝且草稿
+   内容不被泄露。
+3. **假如** 凭证已过期、被停用或无效，**当** 调用方调用任意资源，**那么** 访问被拒绝，
+   且失败尝试可追踪。
 
-### Edge Cases
+---
 
-- A model service times out, throttles requests, rejects credentials, or returns malformed output.
-- A Prompt references an approved model that is later disabled.
-- Two users attempt to update or publish the same draft concurrently.
-- A published version is referenced after its project, model, or credential is disabled.
-- Input or output exceeds configured size or usage limits.
-- A streaming caller disconnects before generation completes.
-- A workflow condition produces no valid outgoing path.
-- An external request node reaches a forbidden or unsafe destination.
-- A user loses project membership while a long-running execution is active.
-- Full input/output retention is disabled or content requires masking.
+### 用户故事 5：构建和运行基础 AI 工作流（优先级：P2）
 
-## Requirements *(mandatory)*
+开发者通过可视化方式连接受限节点，接收输入、准备 Prompt、调用模型、执行条件分支、按需
+调用已批准的外部服务，并返回结果。
 
-### Scope and Boundaries
+**优先级原因**：工作流扩展了平台能力，但即使没有工作流，完整的 Prompt 生命周期仍然具有
+独立价值。
 
-The first release includes project access control, approved model configuration, Prompt lifecycle,
-external invocation, bounded workflows, execution records, usage/cost visibility, and audit logs.
+**独立测试方式**：构建、校验、运行并发布一个“开始 → 模型 → 结束”的工作流，然后查看
+每个已执行节点的结果。
 
-The first release excludes model training and fine-tuning, model-file hosting, a general chat
-product, complete knowledge-base functionality, autonomous or multi-agent planning, arbitrary code
-execution, real-time collaborative editing, commercial billing, public plugin marketplaces, mobile
-applications, and multi-organization SaaS operations.
+**验收场景**：
 
-### Functional Requirements
+1. **假如** 工作流由有效的开始、模型和结束节点组成，**当** 开发者校验并运行它，**那么**
+   节点按依赖顺序执行并产生最终结果。
+2. **假如** 工作流包含环路、不可达节点、缺少入口或出口，或者存在无效引用，**当** 系统
+   执行校验，**那么** 发布和执行均被阻止，并显示具体错误。
+3. **假如** 某个节点执行失败，**当** 有权限的用户查看运行详情，**那么** 可以识别失败节点、
+   脱敏错误、已完成节点和被跳过的下游节点。
 
-#### Identity, Projects, and Authorization
+---
 
-- **FR-001**: The platform MUST require an authenticated identity for every management operation.
-- **FR-002**: The platform MUST support system-level functional permissions separately from
-  project-level resource permissions.
-- **FR-003**: Authorized users MUST be able to create, view, update, archive, and list projects.
-- **FR-004**: Project owners and permitted administrators MUST be able to add, remove, and change
-  the project roles of members.
-- **FR-005**: Project roles MUST distinguish ownership, administration, development, publication,
-  and read-only observation responsibilities.
-- **FR-006**: Every project resource operation MUST verify the actor's current membership and
-  permitted action.
-- **FR-007**: Cross-project identifiers, searches, exports, and records MUST NOT disclose resources
-  to unauthorized users.
-- **FR-008**: Removing a user's project access MUST prevent new protected operations immediately.
+### 用户故事 6：监控用量并审计变更（优先级：P2）
 
-#### Models and Credentials
+运维人员可以按照项目、资源、用户、时间、状态或追踪标识，调查执行记录、用量、费用、失败、
+发布以及权限变更。
 
-- **FR-009**: System administrators MUST be able to register approved model providers and models,
-  including identity, availability, supported capabilities, and usage pricing metadata.
-- **FR-010**: Administrators MUST be able to store, replace, disable, and test provider credentials
-  without revealing an existing reusable secret.
-- **FR-011**: Developers MUST only be able to select models approved and enabled for their project.
-- **FR-012**: The platform MUST support complete and incremental model responses when the selected
-  model declares those capabilities.
-- **FR-013**: Model failures MUST produce normalized, sanitized errors distinguishing validation,
-  authentication, limit, timeout, provider, and internal failures.
-- **FR-014**: Each completed model call MUST record reported input usage, output usage, duration,
-  selected model, and estimated cost when pricing data is available.
+**优先级原因**：成本控制、故障定位和企业问责都需要完整的运行证据。
 
-#### Prompt Lifecycle
+**独立测试方式**：产生成功和失败的运行记录以及一次发布变更，使用筛选条件找到每条记录，
+并验证敏感信息始终受到保护。
 
-- **FR-015**: Developers MUST be able to create a Prompt with a stable project-unique code, name,
-  description, instruction templates, variables, and optional input/output rules.
-- **FR-016**: Prompt variables MUST support required status, description, type, and default value.
-- **FR-017**: The platform MUST validate supplied variables before contacting a model.
-- **FR-018**: Developers MUST be able to test a draft or selected historical version with sample
-  input and permitted model parameters.
-- **FR-019**: Every material Prompt change MUST be attributable and represented by a distinct
-  version or draft revision.
-- **FR-020**: Published Prompt versions MUST be immutable.
-- **FR-021**: Authorized users MUST be able to compare two Prompt versions.
-- **FR-022**: Publication MUST require publication permission, structural validity, and at least one
-  successful test of the version.
-- **FR-023**: Publishers MUST be able to activate a prior published version without deleting later
-  history.
-- **FR-024**: Prompt states MUST distinguish editable work, test-ready work, active publication,
-  and archived content.
+**验收场景**：
 
-#### External Invocation
+1. **假如** 项目中存在多条执行记录，**当** 有权限的运维人员按项目和状态筛选，**那么**
+   结果展示资源版本、耗时、用量、费用和追踪标识。
+2. **假如** 存在一次工作流执行，**当** 有权限的用户打开详情，**那么** 可以查看每个节点的
+   状态、耗时以及被允许展示的输入输出摘要。
+3. **假如** 发生权限、凭证、发布或回滚变更，**当** 审计人员查询受影响资源，**那么** 系统
+   展示操作人、操作内容、目标、时间和结果。
 
-- **FR-025**: Project administrators MUST be able to issue named external credentials with
-  expiration and enabled/disabled status.
-- **FR-026**: A reusable external credential MUST be displayed only when initially issued; stored
-  records MUST not reveal its original value.
-- **FR-027**: External callers MUST be able to invoke a published Prompt using its stable code and
-  declared inputs without receiving provider secrets or internal configuration.
-- **FR-028**: Draft, archived, nonexistent, and unauthorized resources MUST NOT be externally
-  invocable.
-- **FR-029**: External calls MUST support configurable request limits and project usage limits.
-- **FR-030**: Every accepted external call MUST expose an execution reference.
+### 边界情况
 
-#### Workflow Lifecycle and Execution
+- 模型服务超时、限流、拒绝凭证或返回格式错误的内容。
+- Prompt 引用了之后被停用的模型。
+- 两个用户同时修改或发布同一份草稿。
+- 项目、模型或凭证停用后，外部系统仍然引用已发布版本。
+- 输入、输出或 Token 用量超过配置限制。
+- 流式调用方在生成完成前断开连接。
+- 条件节点没有产生任何有效的后续路径。
+- 外部请求节点尝试访问被禁止或不安全的目标地址。
+- 长时间运行任务执行期间，用户失去项目成员身份。
+- 项目关闭了完整输入输出留存，或者执行内容需要脱敏。
 
-- **FR-031**: Developers MUST be able to create, edit, copy, archive, validate, test, version, and
-  publish workflows within a project.
-- **FR-032**: The initial node set MUST include start, end, Prompt preparation, model call,
-  condition, and approved external request nodes.
-- **FR-033**: Each workflow version MUST retain nodes, connections, positions, settings, and
-  input/output mappings.
-- **FR-034**: Validation MUST reject duplicate identifiers, missing start or end nodes, broken
-  references, cycles, unreachable nodes, incomplete settings, and incompatible mappings.
-- **FR-035**: The platform MUST revalidate workflows before execution and publication regardless of
-  client-side results.
-- **FR-036**: Nodes MUST execute only when declared upstream requirements are satisfied.
-- **FR-037**: Condition nodes MUST activate only the path matching their evaluated outcome.
-- **FR-038**: A workflow failure MUST preserve completed outcomes and identify failed and skipped
-  nodes.
-- **FR-039**: Published workflow versions MUST be immutable and externally invocable under the same
-  release and access rules as Prompts.
-- **FR-040**: The first release MUST NOT execute user-supplied arbitrary code.
+## 需求（必填）
 
-#### Execution Records, Privacy, and Audit
+### 范围与边界
 
-- **FR-041**: Every Prompt and workflow run MUST receive a unique execution and trace reference.
-- **FR-042**: Execution records MUST include project, resource version, initiator category, status,
-  timing, usage, estimated cost, and sanitized error details.
-- **FR-043**: Workflow records MUST include per-node status, timing, permitted content summary, and
-  error details.
-- **FR-044**: Projects MUST support full-content, masked-content, and metadata-only retention modes.
-- **FR-045**: Provider secrets and external credentials MUST never appear in ordinary responses,
-  execution content, exports, or logs.
-- **FR-046**: Authorized users MUST be able to search executions by project, resource, version,
-  status, time, initiator, and trace reference.
-- **FR-047**: The platform MUST audit authentication, membership, role, credential, publication,
-  rollback, archive, and other security-relevant changes.
-- **FR-048**: Audit records MUST identify actor, action, target, time, outcome, and trace reference
-  where applicable, and MUST not be editable through normal operations.
+首个版本包含项目访问控制、已批准模型配置、Prompt 生命周期、外部调用、受限工作流、执行
+记录、用量和费用展示，以及审计日志。
 
-### Key Entities
+首个版本不包含模型训练和微调、模型文件托管、通用聊天产品、完整知识库、自治 Agent 或
+多 Agent 规划、任意代码执行、多人实时协作编辑、商业计费、公共插件市场、移动端应用和
+多组织 SaaS 运营。
 
-- **User**: An authenticated person with system permissions and project memberships.
-- **System Role**: A collection of platform-wide functional permissions.
-- **Project**: The ownership and data-isolation boundary for AI resources.
-- **Project Membership**: The relationship between a user, project, and project role.
-- **Model Provider**: An approved source of model capabilities.
-- **Model**: A selectable capability with availability, features, and pricing metadata.
-- **Provider Credential**: Protected authentication material used only by the platform.
-- **Prompt**: A stable project identity with editable drafts and immutable versions.
-- **Prompt Version**: A historical snapshot of templates, variables, settings, and lifecycle state.
-- **Workflow**: A stable project identity for a connected AI processing flow.
-- **Workflow Version**: A snapshot of nodes, edges, mappings, settings, and lifecycle state.
-- **External Credential**: A revocable project-scoped credential for published resources.
-- **Release**: The association identifying which immutable version is active.
-- **Execution**: A traceable Prompt or workflow run with status, usage, cost, timing, and errors.
-- **Node Execution**: The outcome of one node within a workflow run.
-- **Audit Event**: An append-only record of a security-relevant or release action.
+### 功能需求
 
-## Success Criteria *(mandatory)*
+#### 身份、项目与授权
 
-### Measurable Outcomes
+- **FR-001**：所有管理操作都必须要求用户具备已认证身份。
+- **FR-002**：系统必须将平台级功能权限与项目级资源权限分开管理和校验。
+- **FR-003**：有权限的用户必须能够创建、查看、修改、归档和查询项目。
+- **FR-004**：项目所有者和有权限的管理员必须能够添加、移除项目成员并修改其项目角色。
+- **FR-005**：项目角色必须区分所有者、管理员、开发者、发布者和只读观察者职责。
+- **FR-006**：每次项目资源操作都必须校验操作人的当前成员身份和操作权限。
+- **FR-007**：资源标识、搜索、导出和记录查询均不得向未授权用户泄露其他项目资源。
+- **FR-008**：移除用户的项目访问权后，系统必须立即阻止其发起新的受保护操作。
 
-- **SC-001**: In acceptance testing, 100% of attempts to access an unauthorized project's resource
-  are denied without disclosing protected content.
-- **SC-002**: A new developer can create, test, and save a variable-driven Prompt in under 10
-  minutes using an approved model.
-- **SC-003**: A publisher can publish a tested Prompt and roll back to a previous version in under 3
-  minutes, with both actions visible in audit history.
-- **SC-004**: 100% of published-version modification attempts leave the published snapshot
-  unchanged and create or direct the user to editable work.
-- **SC-005**: An application team can obtain a credential and complete its first successful
-  published Prompt invocation in under 15 minutes using platform documentation.
-- **SC-006**: At least 95% of valid model calls under acceptance load begin returning a visible
-  result or clear failure within 5 seconds, excluding provider-wide outages.
-- **SC-007**: 100% of Prompt and workflow executions expose a traceable active or terminal status;
-  workflow runs identify every scheduled node's state.
-- **SC-008**: An operator can locate a run by trace reference and identify its resource version,
-  outcome, duration, and failure location in under 2 minutes.
-- **SC-009**: Security review finds no reusable provider secret or external credential in ordinary
-  responses, committed configuration, execution views, or logs.
-- **SC-010**: A developer can assemble, validate, and successfully run a three-node
-  start-to-model-to-end workflow in under 15 minutes.
-- **SC-011**: 100% of invalid workflows in the acceptance suite are blocked before publication and
-  return at least one actionable reason.
-- **SC-012**: The full MVP path from project creation through model approval, Prompt test,
-  publication, external invocation, and execution investigation completes without direct data-store
-  intervention.
+#### 模型与凭证
 
-## Assumptions
+- **FR-009**：系统管理员必须能够登记已批准的模型供应商和模型，包括名称、可用状态、
+  支持能力和用量价格信息。
+- **FR-010**：管理员必须能够保存、替换、停用和测试供应商凭证，且系统不得展示已有的
+  可重复使用密钥。
+- **FR-011**：开发者只能选择当前项目已批准并启用的模型。
+- **FR-012**：当所选模型声明支持时，平台必须支持完整响应和增量响应。
+- **FR-013**：模型调用失败时，平台必须返回统一且经过脱敏的错误，并区分参数校验、认证、
+  限制、超时、供应商和平台内部错误。
+- **FR-014**：每次完成的模型调用必须记录输入用量、输出用量、耗时、所选模型，以及在价格
+  信息可用时计算的预估费用。
 
-- The first release is deployed for one organization; projects provide internal resource isolation.
-- Existing RBAC capabilities provide user, system-role, menu, and functional-permission management.
-- System administrators are trusted to configure providers and pricing metadata.
-- At least one approved model service is available during acceptance testing.
-- Cost values are estimates derived from usage and configured pricing, not invoices.
-- Publication permission is intentionally separate from development permission.
-- Knowledge retrieval, evaluation datasets, automated judging, approval chains, and distributed
-  workers are future features and not required for MVP acceptance.
-- Browser-based desktop use is the primary management experience for the first release.
+#### Prompt 生命周期
+
+- **FR-015**：开发者必须能够创建 Prompt，并设置项目内唯一的稳定编码、名称、描述、指令
+  模板、变量以及可选的输入输出规则。
+- **FR-016**：Prompt 变量必须支持必填状态、描述、类型和默认值。
+- **FR-017**：平台必须在调用模型前校验调用方提供的变量。
+- **FR-018**：开发者必须能够使用样例输入和允许的模型参数测试草稿或指定历史版本。
+- **FR-019**：每次实质性 Prompt 变更都必须能够追溯到操作人，并形成独立版本或草稿修订。
+- **FR-020**：已发布的 Prompt 版本必须不可修改。
+- **FR-021**：有权限的用户必须能够比较两个 Prompt 版本。
+- **FR-022**：发布必须要求发布权限、结构校验通过，并且该版本至少成功测试过一次。
+- **FR-023**：发布者必须能够重新启用先前发布的版本，同时保留之后产生的版本历史。
+- **FR-024**：Prompt 状态必须区分可编辑草稿、待测试内容、当前发布版本和归档内容。
+
+#### 外部调用
+
+- **FR-025**：项目管理员必须能够签发具备名称、过期时间和启停状态的外部调用凭证。
+- **FR-026**：可重复使用的外部凭证只能在首次签发时展示；之后的存储记录不得还原原始值。
+- **FR-027**：外部调用方必须能够使用稳定资源编码和已声明输入调用已发布 Prompt，且不能
+  获得供应商密钥或内部配置。
+- **FR-028**：草稿、已归档、不存在和调用方无权访问的资源均不得被外部调用。
+- **FR-029**：外部调用必须支持可配置的请求限制和项目用量限制。
+- **FR-030**：每次被接受的外部调用都必须提供执行标识。
+
+#### 工作流生命周期与执行
+
+- **FR-031**：开发者必须能够在项目内创建、编辑、复制、归档、校验、测试、版本化和发布
+  工作流。
+- **FR-032**：首批节点必须包括开始、结束、Prompt 准备、模型调用、条件判断和已批准的
+  外部请求节点。
+- **FR-033**：每个工作流版本必须保留节点、连线、位置、设置和输入输出映射。
+- **FR-034**：校验必须拒绝重复标识、缺少开始或结束节点、引用损坏、环路、不可达节点、
+  设置不完整和映射不兼容的工作流。
+- **FR-035**：无论客户端校验结果如何，平台都必须在执行和发布前重新校验工作流。
+- **FR-036**：只有声明的上游依赖全部满足时，节点才能执行。
+- **FR-037**：条件节点只能激活与条件结果匹配的路径。
+- **FR-038**：工作流执行失败后，系统必须保留已完成节点结果，并标识失败节点和跳过节点。
+- **FR-039**：已发布工作流版本必须不可修改，并遵循与 Prompt 相同的发布和外部访问规则。
+- **FR-040**：首个版本不得执行用户提供的任意代码。
+
+#### 执行记录、隐私与审计
+
+- **FR-041**：每次 Prompt 和工作流运行都必须获得唯一的执行标识和追踪标识。
+- **FR-042**：执行记录必须包含项目、资源版本、发起方类别、状态、时间、用量、预估费用和
+  经过脱敏的错误详情。
+- **FR-043**：工作流记录必须包含每个节点的状态、耗时、允许保留的内容摘要和错误详情。
+- **FR-044**：项目必须支持完整内容、脱敏内容和仅元数据三种执行内容留存模式。
+- **FR-045**：供应商密钥和外部调用凭证不得出现在普通响应、执行内容、导出文件或日志中。
+- **FR-046**：有权限的用户必须能够按照项目、资源、版本、状态、时间、发起方和追踪标识
+  查询执行记录。
+- **FR-047**：平台必须审计认证、成员、角色、凭证、发布、回滚、归档和其他与安全相关的
+  变更。
+- **FR-048**：审计记录必须包含操作人、操作内容、目标、时间、结果以及适用时的追踪标识，
+  并且不得通过正常产品操作被修改。
+
+### 核心实体
+
+- **用户**：拥有系统权限和项目成员身份的已认证人员。
+- **系统角色**：一组平台级功能权限。
+- **项目**：AI 资源的归属和数据隔离边界。
+- **项目成员关系**：用户、项目和项目角色之间的关系。
+- **模型供应商**：平台批准使用的模型能力来源。
+- **模型**：具有可用状态、能力和价格信息的可选 AI 能力。
+- **供应商凭证**：仅供平台内部使用的受保护认证材料。
+- **Prompt**：拥有稳定项目身份、可编辑草稿和不可变版本的资源。
+- **Prompt 版本**：模板、变量、设置和生命周期状态的历史快照。
+- **工作流**：表示一组相连 AI 处理步骤的稳定项目资源。
+- **工作流版本**：节点、连线、映射、设置和生命周期状态的快照。
+- **外部调用凭证**：用于调用已发布资源、可撤销且限定项目范围的凭证。
+- **发布记录**：标识当前生效不可变版本的关联关系。
+- **执行记录**：包含状态、用量、费用、耗时和错误的可追踪运行记录。
+- **节点执行记录**：工作流中某个节点的执行结果。
+- **审计事件**：与安全或发布治理相关的追加式操作记录。
+
+## 成功标准（必填）
+
+### 可量化结果
+
+- **SC-001**：在验收测试中，100% 的未授权跨项目访问尝试都被拒绝，且不泄露受保护内容。
+- **SC-002**：在已有可用模型的前提下，新开发者可以在 10 分钟内创建、测试并保存一个
+  含变量的 Prompt。
+- **SC-003**：发布者可以在 3 分钟内发布已测试 Prompt，并回滚到历史版本；两次操作都能
+  在审计历史中找到。
+- **SC-004**：100% 的已发布版本修改尝试都不会改变已发布快照，并会创建或引导用户进入
+  可编辑内容。
+- **SC-005**：应用团队根据平台文档，可以在 15 分钟内获取凭证并完成第一次成功的已发布
+  Prompt 调用。
+- **SC-006**：在验收负载下，至少 95% 的有效模型调用能在 5 秒内开始展示结果或明确的失败
+  状态；供应商整体故障除外。
+- **SC-007**：100% 的 Prompt 和工作流执行都具备可追踪的运行中或终止状态；工作流能够
+  展示每个已调度节点的状态。
+- **SC-008**：运维人员可以在 2 分钟内通过追踪标识找到执行记录，并确认资源版本、结果、
+  耗时和失败位置。
+- **SC-009**：安全检查无法从普通响应、已提交配置、执行页面或日志中发现可重复使用的
+  供应商密钥或外部调用凭证。
+- **SC-010**：开发者可以在 15 分钟内组装、校验并成功运行一个“开始 → 模型 → 结束”的
+  三节点工作流。
+- **SC-011**：验收套件中 100% 的无效工作流都在发布前被阻止，并至少返回一个可执行的
+  修正原因。
+- **SC-012**：从项目创建、模型批准、Prompt 测试、发布、外部调用到执行调查的完整 MVP
+  流程，无需直接操作数据存储即可完成。
+
+## 假设
+
+- 首个版本部署给单一组织使用，项目负责组织内部的资源隔离。
+- 现有 RBAC 基础能力负责用户、系统角色、菜单和功能权限管理。
+- 系统管理员被信任，可以配置模型供应商和价格信息。
+- 验收测试期间至少有一个已批准且可用的模型服务。
+- 费用是根据用量和配置价格计算的估算值，不等同于供应商账单。
+- 发布权限与开发权限有意分离。
+- 知识检索、评测数据集、自动评分、审批链和分布式执行器属于后续功能，不是 MVP 验收条件。
+- 首个版本主要面向桌面浏览器管理场景。

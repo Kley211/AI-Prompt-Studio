@@ -1,14 +1,14 @@
-# Specification Index
+# 规格文档索引
 
-This project follows GitHub Spec Kit's spec-driven development workflow.
+本项目采用 GitHub Spec Kit 的规格驱动开发流程。
 
-The active product specification is:
+当前有效的产品规格：
 
-- [AI Capability Governance Platform](./specs/001-ai-governance-platform/spec.md)
+- [企业级 AI 能力治理平台](./specs/001-ai-governance-platform/spec.md)
 
-Project-wide engineering principles are defined in:
+项目级工程原则：
 
-- [Project Constitution](./.specify/memory/constitution.md)
+- [项目宪章](./.specify/memory/constitution.md)
 
-Implementation choices and development tasks are intentionally not duplicated here. They will be
-created in the active feature directory by the `$speckit-plan` and `$speckit-tasks` phases.
+本文件不重复记录实现方案和开发任务。后续将通过 `$speckit-plan` 和 `$speckit-tasks`
+在当前功能目录中分别生成技术实施计划和可执行任务清单。

@@ -12,3 +12,9 @@
 
 - 尚未执行登录冒烟测试，需在本地数据库初始化并启动 `ruoyi-admin` 后补充。
 - 尚未执行前端依赖安装和生产构建。
+
+## 阶段 2 进行中（2026-08-21）
+
+- 新增 `ai-common` 模块，定义项目访问端口、分页对象、平台错误协议、Trace ID Filter 和敏感字段脱敏。
+- 验证命令：`./mvnw.cmd -pl ruoyi-modules/ai-common -am test -Dmaven.test.skip=false -Dcheckstyle.skip=true`
+- 结果：通过，`ai-common` 3 项单元测试通过。

@@ -16,6 +16,11 @@
     </description>
 
     <dependencies>
+        <dependency>
+            <groupId>org.dromara</groupId>
+            <artifactId>ai-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <!-- Mysql驱动包 -->
         <dependency>

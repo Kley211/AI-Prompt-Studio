@@ -16,6 +16,7 @@ dist/
 
 # Local configuration and secrets
 application-local.yml
+**/application-local.yml
 .env
 .env.*
 !.env.example

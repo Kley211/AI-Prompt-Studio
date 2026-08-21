@@ -13,7 +13,7 @@
 - [X] T003 [P] 创建 `deploy/compose/docker-compose.yml`，定义 PostgreSQL 17 和 Redis 8 的本地开发服务及健康检查。
 - [X] T004 [P] 创建 `db/migration/README.md` 和 Flyway 迁移目录，约定迁移命名、回滚限制和初始化菜单管理方式。
 - [X] T005 [P] 创建 `tests/architecture/`、`tests/integration/` 和 `tests/e2e/` 目录，并配置基础测试脚本。
-- [ ] T006 运行基线构建和登录冒烟测试，记录 `docs/verification/baseline.md`。
+- [X] T006 运行基线构建和登录冒烟测试，记录 `docs/verification/baseline.md`。
 
 ## 阶段 2：基础设施与跨模块约束
 

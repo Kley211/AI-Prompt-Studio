@@ -10,6 +10,9 @@ spring:
           password: ${POSTGRES_PASSWORD:change-me-local}
   flyway:
     enabled: true
+    url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:ai_prompt}
+    user: ${POSTGRES_USER:ai_prompt}
+    password: ${POSTGRES_PASSWORD:change-me-local}
 
 spring.data:
   redis:

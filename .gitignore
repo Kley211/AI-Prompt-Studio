@@ -1,0 +1,26 @@
+# Java
+target/
+*.class
+*.jar
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Local configuration and secrets
+application-local.yml
+.env
+.env.*
+!.env.example
+
+# Logs and OS files
+logs/
+*.log
+.DS_Store
+Thumbs.db

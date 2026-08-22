@@ -37,12 +37,12 @@
 
 **独立验收**：创建两个项目和不同成员，验证授权操作成功、观察者修改被拒绝、跨项目资源不泄露。
 
-- [ ] T016 [P] [US1] 创建 `db/migration/V003__ai_project.sql`，建立 `ai_project` 和 `ai_project_member` 表、唯一约束和索引。
-- [ ] T017 [P] [US1] 创建 `ruoyi-modules/ai-project/domain/Project.java`、`ProjectMember.java` 和项目角色值对象。
-- [ ] T018 [P] [US1] 创建 `ruoyi-modules/ai-project/infrastructure/ProjectMapper.java`、`ProjectMemberMapper.java` 及映射文件。
-- [ ] T019 [US1] 实现 `ruoyi-modules/ai-project/application/ProjectApplicationService.java`，完成项目创建、修改、归档和成员管理事务。
-- [ ] T020 [US1] 实现 `ruoyi-modules/ai-project/application/ProjectAccessServiceImpl.java`，覆盖查看、编辑、发布和成员管理判断。
-- [ ] T021 [US1] 实现 `ruoyi-modules/ai-project/controller/ProjectController.java` 和 `ProjectMemberController.java`，添加系统权限与项目权限双重校验。
+- [X] T016 [P] [US1] 创建 `db/migration/V003__ai_project.sql`，建立 `ai_project` 和 `ai_project_member` 表、唯一约束和索引。
+- [X] T017 [P] [US1] 创建 `ruoyi-modules/ai-project/domain/Project.java`、`ProjectMember.java` 和项目角色值对象。
+- [X] T018 [P] [US1] 创建 `ruoyi-modules/ai-project/infrastructure/ProjectMapper.java`、`ProjectMemberMapper.java` 及映射文件。
+- [X] T019 [US1] 实现 `ruoyi-modules/ai-project/application/ProjectApplicationService.java`，完成项目创建、修改、归档和成员管理事务。
+- [X] T020 [US1] 实现 `ruoyi-modules/ai-project/application/ProjectAccessServiceImpl.java`，覆盖查看、编辑、发布和成员管理判断。
+- [X] T021 [US1] 实现 `ruoyi-modules/ai-project/controller/ProjectController.java` 和 `ProjectMemberController.java`，添加系统权限与项目权限双重校验。
 - [ ] T022 [US1] 实现 `plus-ui/src/views/ai/project/` 项目列表、详情、成员和角色管理页面及权限按钮。
 - [ ] T023 [P] [US1] 编写 `tests/integration/ProjectAuthorizationIT.java`，覆盖跨项目读取、观察者编辑和移除成员后立即失权。
 - [ ] T024 [US1] 编写 `tests/e2e/project-access.spec.ts`，验证项目创建、成员分配和越权操作提示。

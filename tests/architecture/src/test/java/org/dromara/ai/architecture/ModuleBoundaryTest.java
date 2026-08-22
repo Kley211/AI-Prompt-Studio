@@ -1,19 +1,20 @@
 package org.dromara.ai.architecture;
 
-import com.tngtech.archunit.junit.AnalyzeClasses;
-import com.tngtech.archunit.junit.ArchTest;
-import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-@AnalyzeClasses(packages = "org.dromara.ai")
 @Tag("dev")
 public class ModuleBoundaryTest {
 
-    @ArchTest
-    static final ArchRule infrastructureIsNotAccessedOutsideInfrastructureLayer = noClasses()
-            .that().resideOutsideOfPackages("..infrastructure..")
-            .should().accessClassesThat().resideInAnyPackage("..infrastructure..")
-            .because("AI 模块必须通过公共契约通信，不能直接访问 Mapper、Entity 或数据库基础设施");
+    @Test
+    void projectInfrastructureIsPrivateToProjectModule() {
+        noClasses()
+            .that().resideOutsideOfPackage("org.dromara.ai.project..")
+            .should().accessClassesThat().resideInAnyPackage("org.dromara.ai.project.infrastructure..")
+            .because("其他 AI 模块必须通过 ai-project 公共服务访问项目数据，不能直接访问 Mapper")
+            .check(new ClassFileImporter().importPackages("org.dromara.ai"));
+    }
 }

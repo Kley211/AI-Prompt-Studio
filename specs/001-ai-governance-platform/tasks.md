@@ -56,10 +56,10 @@
 
 **独立验收**：使用已批准模型创建 Prompt；缺少必填变量时不调用模型；有效输入可得到结果和执行详情。
 
-- [ ] T026 [P] [US2] 创建 `db/migration/V004__ai_model.sql`，建立供应商、模型、密文凭证和项目模型授权表。
-- [ ] T027 [P] [US2] 创建 `ruoyi-modules/ai-model/domain/` 的供应商、模型、凭证和能力值对象。
-- [ ] T028 [US2] 实现 `ruoyi-modules/ai-model/infrastructure/SecretCipher.java`，使用部署注入主密钥完成凭证加解密和密钥版本管理。
-- [ ] T029 [US2] 定义 `ruoyi-modules/ai-model/application/ChatModelGateway.java`、请求/响应对象和统一模型错误。
+- [X] T026 [P] [US2] 创建 `db/migration/V004__ai_model.sql`，建立供应商、模型、密文凭证和项目模型授权表。
+- [X] T027 [P] [US2] 创建 `ruoyi-modules/ai-model/domain/` 的供应商、模型、凭证和能力值对象。
+- [X] T028 [US2] 实现 `ruoyi-modules/ai-model/infrastructure/SecretCipher.java`，使用部署注入主密钥完成凭证加解密和密钥版本管理。
+- [X] T029 [US2] 定义 `ruoyi-modules/ai-model/application/ChatModelGateway.java`、请求/响应对象和统一模型错误。
 - [ ] T030 [US2] 实现 `ruoyi-modules/ai-model/infrastructure/OpenAiCompatibleGateway.java`，支持非流式、SSE 流式、超时和错误归一化。
 - [ ] T031 [US2] 实现 `ruoyi-modules/ai-model/application/ModelApplicationService.java`，完成供应商、模型、凭证和项目授权管理。
 - [ ] T032 [P] [US2] 创建 `db/migration/V005__ai_prompt.sql`，建立 Prompt 主表、版本表和变量 JSON 字段。

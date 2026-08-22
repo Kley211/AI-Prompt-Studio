@@ -17,4 +17,13 @@ public class ModuleBoundaryTest {
             .because("其他 AI 模块必须通过 ai-project 公共服务访问项目数据，不能直接访问 Mapper")
             .check(new ClassFileImporter().importPackages("org.dromara.ai"));
     }
+
+    @Test
+    void modelInfrastructureIsPrivateToModelModule() {
+        noClasses()
+            .that().resideOutsideOfPackage("org.dromara.ai.model..")
+            .should().accessClassesThat().resideInAnyPackage("org.dromara.ai.model.infrastructure..")
+            .because("其他 AI 模块必须通过 ai-model 公共应用契约访问模型能力，不能直接访问凭证或供应商实现")
+            .check(new ClassFileImporter().importPackages("org.dromara.ai"));
+    }
 }

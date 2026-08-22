@@ -43,10 +43,10 @@
 - [X] T019 [US1] 实现 `ruoyi-modules/ai-project/application/ProjectApplicationService.java`，完成项目创建、修改、归档和成员管理事务。
 - [X] T020 [US1] 实现 `ruoyi-modules/ai-project/application/ProjectAccessServiceImpl.java`，覆盖查看、编辑、发布和成员管理判断。
 - [X] T021 [US1] 实现 `ruoyi-modules/ai-project/controller/ProjectController.java` 和 `ProjectMemberController.java`，添加系统权限与项目权限双重校验。
-- [ ] T022 [US1] 实现 `plus-ui/src/views/ai/project/` 项目列表、详情、成员和角色管理页面及权限按钮。
-- [ ] T023 [P] [US1] 编写 `tests/integration/ProjectAuthorizationIT.java`，覆盖跨项目读取、观察者编辑和移除成员后立即失权。
-- [ ] T024 [US1] 编写 `tests/e2e/project-access.spec.ts`，验证项目创建、成员分配和越权操作提示。
-- [ ] T025 [US1] 运行项目隔离验收并更新 `docs/verification/us1-project.md`。
+- [X] T022 [US1] 实现 `plus-ui/src/views/ai/project/` 项目列表、详情、成员和角色管理页面及权限按钮。
+- [X] T023 [P] [US1] 编写 `tests/integration/ProjectAuthorizationIT.java`，覆盖跨项目读取、观察者编辑和移除成员后立即失权。
+- [X] T024 [US1] 编写 `tests/e2e/project-access.spec.ts`，验证项目创建、成员分配和越权操作提示。
+- [X] T025 [US1] 运行项目隔离验收并更新 `docs/verification/us1-project.md`。
 
 **检查点**：US1 不依赖后续 AI 模块即可完成并演示。
 

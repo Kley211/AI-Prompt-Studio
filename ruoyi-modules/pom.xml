@@ -19,6 +19,7 @@
         <module>ai-common</module>
         <module>ai-model</module>
         <module>ai-prompt</module>
+        <module>ai-execution</module>
         <module>ai-project</module>
         <module>ruoyi-demo</module>
         <module>ruoyi-gen</module>

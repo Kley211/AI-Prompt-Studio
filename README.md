@@ -24,6 +24,32 @@
 - 运行依赖：执行 `docker compose -f deploy/compose/docker-compose.yml up -d`
 - Java、Node.js 和 pnpm 版本约束见 `.tool-versions`
 
+## 本地启动
+
+首次启动先从模板创建本地配置。该文件已被 Git 忽略，不会提交密码或密钥：
+
+```powershell
+Copy-Item application-local.yml.example ruoyi-admin/src/main/resources/application-local.yml
+docker compose -f deploy/compose/docker-compose.yml up -d postgres redis
+```
+
+启动后端时必须使用 `local` profile；`dev` profile 是上游默认的 MySQL 环境。先完成 Reactor 打包，再运行启动模块，可避免本地 Maven 仓库缺少同仓模块：
+
+```powershell
+.\mvnw.cmd -pl ruoyi-admin -am package -Plocal '-DskipTests' '-Dcheckstyle.skip=true'
+& "$env:JAVA_HOME\bin\java.exe" -jar ruoyi-admin/target/ruoyi-admin.jar --spring.profiles.active=local
+```
+
+另开终端启动前端：
+
+```powershell
+Set-Location plus-ui
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
+```
+
+前端默认访问 `http://localhost`，并将 `/dev-api` 代理到 `http://localhost:8080`。验证码接口依赖后端和 Redis，后端未成功启动时验证码图片会为空。
+
 ## 设计原则
 
 - 模块化单体优先，避免过早拆分微服务。

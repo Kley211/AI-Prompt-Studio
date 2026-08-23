@@ -1,29 +1,50 @@
 spring:
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     dynamic:
       primary: master
+      strict: true
       datasource:
         master:
+          type: ${spring.datasource.type}
           driverClassName: org.postgresql.Driver
           url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:ai_prompt}
           username: ${POSTGRES_USER:ai_prompt}
           password: ${POSTGRES_PASSWORD:change-me-local}
   flyway:
-    enabled: true
-    url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:ai_prompt}
-    user: ${POSTGRES_USER:ai_prompt}
-    password: ${POSTGRES_PASSWORD:change-me-local}
+    enabled: false
 
 spring.data:
   redis:
     host: localhost
     port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:}
 
 ai-platform:
   security:
-    encryption-key: ${AI_ENCRYPTION_KEY:replace-with-32-byte-local-key}
+    encryption-key: ${AI_ENCRYPTION_KEY:}
+    encryption-key-version: ${AI_ENCRYPTION_KEY_VERSION:v1}
   execution:
     core-pool-size: 8
     max-pool-size: 32
     queue-capacity: 500
+
+redisson:
+  keyPrefix:
+  threads: 4
+  nettyThreads: 8
+  singleServerConfig:
+    clientName: AI-Prompt-Studio
+    connectionMinimumIdleSize: 4
+    connectionPoolSize: 16
+    idleConnectionTimeout: 10000
+    timeout: 3000
+    subscriptionConnectionPoolSize: 20
+
+spring.boot.admin.client:
+  enabled: false
+
+snail-job:
+  enabled: false
+
+snail-ai:
+  enabled: false

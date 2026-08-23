@@ -94,7 +94,6 @@ ai-platform:
   security:
     encryption-key: ${AI_ENCRYPTION_KEY:}
     encryption-key-version: ${AI_ENCRYPTION_KEY_VERSION:v1}
-    decryption-keys: {}
   execution:
     core-pool-size: ${AI_EXECUTION_CORE_POOL_SIZE:8}
     max-pool-size: ${AI_EXECUTION_MAX_POOL_SIZE:32}

@@ -1,6 +1,7 @@
 package org.dromara.ai.model.infrastructure;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -21,6 +22,7 @@ public class SecretCipher {
     private final ModelSecurityProperties properties;
     private final SecureRandom secureRandom;
 
+    @Autowired
     public SecretCipher(ModelSecurityProperties properties) {
         this(properties, new SecureRandom());
     }

@@ -160,6 +160,19 @@ public class ModelApplicationService {
             .orderByAsc(ProjectModel::getAlias));
     }
 
+    /**
+     * 校验并返回项目当前可用的模型授权，不暴露凭证内容。
+     */
+    public ProjectModel authorizedProjectModel(long projectId, long modelId) {
+        ProjectModel projectModel = requireProjectModel(projectId, modelId);
+        requireActive(projectModel.getStatus(), "项目未启用该模型");
+        AiModel model = model(modelId);
+        requireActive(model.getStatus(), "模型已停用");
+        ModelProvider provider = provider(model.getProviderId());
+        requireActive(provider.getStatus(), "模型供应商已停用");
+        return projectModel;
+    }
+
     @Transactional
     public ProjectModel grantProjectModel(long projectId, ModelCommand.GrantProjectModel command) {
         AiModel model = model(command.modelId());
@@ -197,12 +210,9 @@ public class ModelApplicationService {
      * 解析项目可用模型的运行时配置，密钥仅在调用链内部短暂解密。
      */
     public ModelRuntimeConfig runtimeConfig(long projectId, long modelId) {
-        ProjectModel projectModel = requireProjectModel(projectId, modelId);
-        requireActive(projectModel.getStatus(), "项目未启用该模型");
+        ProjectModel projectModel = authorizedProjectModel(projectId, modelId);
         AiModel model = model(modelId);
-        requireActive(model.getStatus(), "模型已停用");
         ModelProvider provider = provider(model.getProviderId());
-        requireActive(provider.getStatus(), "模型供应商已停用");
         ModelCredential credential = credentialMapper.selectList(Wrappers.<ModelCredential>lambdaQuery()
                 .eq(ModelCredential::getProviderId, provider.getId())
                 .eq(ModelCredential::getStatus, ModelStatus.ACTIVE)

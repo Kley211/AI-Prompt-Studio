@@ -63,7 +63,7 @@
 - [X] T030 [US2] 实现 `ruoyi-modules/ai-model/infrastructure/OpenAiCompatibleGateway.java`，支持非流式、SSE 流式、超时和错误归一化。
 - [X] T031 [US2] 实现 `ruoyi-modules/ai-model/application/ModelApplicationService.java`，完成供应商、模型、凭证和项目授权管理。
 - [X] T032 [P] [US2] 创建 `db/migration/V005__ai_prompt.sql`，建立 Prompt 主表、版本表和变量 JSON 字段。
-- [ ] T033 [P] [US2] 实现 `ruoyi-modules/ai-prompt/domain/PromptTemplateRenderer.java` 和变量、Schema 校验值对象。
+- [X] T033 [P] [US2] 实现 `ruoyi-modules/ai-prompt/domain/PromptTemplateRenderer.java` 和变量、Schema 校验值对象。
 - [ ] T034 [US2] 实现 `ruoyi-modules/ai-prompt/application/PromptApplicationService.java`，完成 Prompt 创建、草稿版本和模板校验。
 - [ ] T035 [US2] 实现 `ruoyi-modules/ai-execution/domain/ExecutionRecorder.java` 和 `ExecutionCostCalculator.java`。
 - [ ] T036 [US2] 实现 `ruoyi-modules/ai-prompt/application/PromptTestService.java`，串联项目权限、变量校验、模型网关和执行记录。
